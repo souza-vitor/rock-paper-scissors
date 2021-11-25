@@ -32,12 +32,48 @@
         }
 
         function round(playerSelection, computerSelection){
+            let winner = "";
 
+            if(playerSelection == "rock" && computerSelection == "scissors"){
+                winner = "player"
+            } else if (playerSelection == "paper" && computerSelection == "rock"){
+                winner = "player"
+            } else if (playerSelection == "scissors" && computerSelection == "paper"){
+                winner = "player"
+            } else if(computerSelection == "rock" && playerSelection == "scissors"){
+                winner = "computer"
+            } else if(computerSelection == "paper" && playerSelection == "rock"){
+                winner = "computer"
+            } else if(computerSelection == "scissors" && playerSelection == "paper"){
+                winner = "computer"
+            } else {
+                winner = "draw"
+            }
+
+            return winner
         }
 
-        
+        function game(){
+            let playerScore = 0;
+            let computerScore = 0;
 
-        playerSelection()
+            for(i = 0; i <= 4; i++){
+                let result = round(playerSelection(), computerPlay());
+
+                if(result == "player"){
+                    playerScore++
+                } else if(result == "computer"){
+                    computerScore++
+                }
+            }
+
+            
+
+            return `The winner is... ${playerScore > computerScore ? "Player" : (computerScore > playerScore ? "Computer" : "Wait, It's a draw")}!`;
+        }
+
+        console.log(game())
+
     </script>
 </body>
 </html>

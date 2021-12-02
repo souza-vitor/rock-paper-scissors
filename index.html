@@ -5,11 +5,65 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
+    <style>
+        body{
+            background-color: black;
+        }
+
+        .container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin: 20px;
+        }
+        
+        .screen{
+            width: 500px;
+            height: 300px;
+            /* background-color: blue; */
+            border: 2px solid lime;
+            color: limegreen;
+            border-radius: 2px;
+        }
+
+        p{
+            margin-top: 5px;
+            margin-left: 10px;
+            margin-bottom: 0;
+            
+        }
+
+        button{
+            border: 2px solid limegreen;
+            border-radius: 2px;;
+            padding: 10px;
+            margin-right: 10px;
+            color: lime;
+            background-color: black;
+            font-weight: bolder;
+        }
+    </style>
 </head>
 <body>
     
+    <div class="container">
+        <div class="screen">
+
+        </div>
+        <div class="buttons">
+            <button id="rock">$ echo "Rock" </button>
+            <button id="paper">$ echo "Paper"</button>
+            <button id="scissors">$ echo "Scissors"</button>
+        </div>
+    </div>
 
     <script>
+        let playerSelection = "";
+
+        let playerScore = 0;
+        let computerScore = 0;
+
         function computerPlay(){
             let output = "";
             let randInt = Math.floor(Math.random() * 3);
@@ -23,12 +77,6 @@
             }
 
             return output;
-        }
-
-        function playerSelection(){
-            let playerInput = prompt("Choose your option: rock, paper or scissors?").toLowerCase();
-
-            return playerInput;
         }
 
         function round(playerSelection, computerSelection){
@@ -47,32 +95,70 @@
             } else if(computerSelection == "scissors" && playerSelection == "paper"){
                 winner = "computer"
             } else {
-                winner = "draw"
+                winner = "wait, it's a draw"
             }
 
             return winner
         }
 
-        function game(){
-            let playerScore = 0;
-            let computerScore = 0;
-
-            for(i = 0; i <= 4; i++){
-                let result = round(playerSelection(), computerPlay());
-
-                if(result == "player"){
-                    playerScore++
-                } else if(result == "computer"){
-                    computerScore++
-                }
+        function score(result){
+            if(result == "player"){
+                playerScore++
+            } else if (result == "computer"){
+                computerScore++
             }
-
-            
-
-            return `The winner is... ${playerScore > computerScore ? "Player" : (computerScore > playerScore ? "Computer" : "Wait, It's a draw")}!`;
+            return "Score: " + playerScore + " : " + computerScore;
         }
 
-        console.log(game())
+        function isWinner(playerScore, computerScore){
+            if(playerScore == 5){
+                reset();
+                alert("You win!");
+            } else if (computerScore == 5){
+                reset();
+                alert("You lose!");
+            }
+        }
+
+        function reset(){
+            playerScore = 0;
+            computerScore = 0;
+        }
+
+        const screen = document.querySelector(".screen");
+
+        const buttons = document.querySelectorAll("button");
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                 //delete elements
+                 screen.innerHTML = "";
+
+                 let computerSelection = computerPlay();
+
+                 playerSelection = button.id.toString();
+
+                //player choice
+
+                 let paraPlayer = document.createElement("p");
+                 paraPlayer.innerText = "you choose: " + playerSelection;
+                screen.appendChild(paraPlayer);
+                //player computer
+
+                let paraComp = document.createElement("p");
+                 paraComp.innerText = "computer choose: " + computerSelection;
+                screen.appendChild(paraComp);
+                
+                //winner
+                score(round(playerSelection,computerSelection));
+
+                let paraWin = document.createElement("p");
+                 paraWin.innerText = "score: " + playerScore + " : " + computerScore;
+                screen.appendChild(paraWin);
+
+                isWinner(playerScore,computerScore);
+            });
+        });
 
     </script>
 </body>
